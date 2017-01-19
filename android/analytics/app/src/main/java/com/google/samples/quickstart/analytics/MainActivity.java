@@ -16,6 +16,8 @@
 
 package com.google.samples.quickstart.analytics;
 
+import com.google.samples.quickstart.analytics.utils.Analytics;
+
 import java.util.Locale;
 
 import android.content.Intent;
@@ -28,9 +30,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 /**
  * Activity which displays numerous background images that may be viewed. These background images
@@ -58,21 +57,10 @@ public class MainActivity extends AppCompatActivity {
    */
   private ViewPager mViewPager;
 
-  /**
-   * The {@link Tracker} used to record screen views.
-   */
-  private Tracker mTracker;
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-
-    // [START shared_tracker]
-    // Obtain the shared Tracker instance.
-    AnalyticsApplication application = (AnalyticsApplication) getApplication();
-    mTracker = application.getDefaultTracker();
-    // [END shared_tracker]
 
     // Create the adapter that will return a fragment for each image.
     mImagePagerAdapter = new ImagePagerAdapter(getSupportFragmentManager(), IMAGE_INFOS);
@@ -104,10 +92,7 @@ public class MainActivity extends AppCompatActivity {
     switch(item.getItemId()) {
       case R.id.menu_share:
         // [START custom_event]
-        mTracker.send(new HitBuilders.EventBuilder()
-            .setCategory("Action")
-            .setAction("Share")
-            .build());
+        Analytics.getInstance().reportAction("Action", "Share");
         // [END custom_event]
 
         String name = getCurrentImageTitle();
@@ -142,8 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
     // [START screen_view_hit]
     Log.i(TAG, "Setting screen name: " + name);
-    mTracker.setScreenName("Image~" + name);
-    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    Analytics.getInstance().reportScreenView("Image~" + name);
     // [END screen_view_hit]
   }
 

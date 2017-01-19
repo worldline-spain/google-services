@@ -31,7 +31,10 @@ public class Analytics {
 
     /**
      * Following: https://developers.google.com/analytics/devguides/collection/android/v4/
-     * To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+     * To enable debug logging use:
+     * adb shell setprop log.tag.FA VERBOSE
+     * adb shell setprop log.tag.FA-SVC VERBOSE
+     * adb logcat -v time -s FA FA-SVC
      *
      * @return tracker
      */
